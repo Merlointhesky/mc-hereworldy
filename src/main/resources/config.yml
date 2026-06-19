@@ -1,0 +1,21 @@
+# HereWorldy Configuration File
+
+# The delay in seconds a player must stand in a portal before they are teleported
+portal-warmup-seconds: 3
+
+# Inventory Groups define which worlds share the same player inventory/stats.
+# Any world not explicitly added to a group will belong to its own unique group (isolated).
+inventory-groups:
+  default_survival:
+    - "world"
+    - "world_nether"
+    - "world_the_end"
+
+# Particle settings for portals
+portal-particles:
+  enabled: true
+
+# BlueMap Integration
+# Automatically creates/removes BlueMap map configurations for custom dynamic worlds.
+bluemap-integration:
+  enabled: true

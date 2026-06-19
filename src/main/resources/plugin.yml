@@ -1,0 +1,21 @@
+name: HereWorldy
+version: '${version}'
+main: com.hereworldy.hereworldy.HereWorldyPlugin
+description: Create and manage custom dimensions, travel through gradient portal panels, and sync items through inter-dimensional chests.
+api-version: '1.21'
+author: Merlointhesky
+
+commands:
+  hereworldy:
+    description: Main command for HereWorldy world and portal management
+    usage: /hereworldy <create|delete|list|tp|portal-select|portal-set>
+    permission: hereworldy.admin
+    aliases: [hw]
+
+permissions:
+  hereworldy.admin:
+    description: Allows administration of worlds and portals
+    default: op
+  hereworldy.use:
+    description: Allows players to use portals and inter-dimensional chests
+    default: true
