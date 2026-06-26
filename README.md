@@ -63,6 +63,15 @@ The compiled plugin JAR will be saved in `build/libs/`.
 
 ---
 
+## Recent Changes (v1.0.1)
+
+- **Stability & Performance Optimization**: Added chunk-loaded validations, empty-world checks, and proximity checks to the portal task loop to prevent loading or keeping chunks loaded unnecessarily.
+- **Chest & Sign Lookup Optimization**: Implemented fast-path block type checks before retrieving sign block states, minimizing JVM garbage collection overhead.
+- **Version Bump**: Incremented version to `1.0.1` following `v.r.b` versioning.
+
+---
+
 ## License
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE).
+
