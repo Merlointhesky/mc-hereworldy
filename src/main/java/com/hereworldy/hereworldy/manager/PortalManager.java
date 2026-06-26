@@ -162,6 +162,49 @@ public class PortalManager {
                     World world = Bukkit.getWorld(portal.worldName);
                     if (world == null) continue;
 
+                    // Skip processing if there are no players in the world at all
+                    if (world.getPlayers().isEmpty()) continue;
+
+                    // Check if the chunks containing the portal coordinates are loaded
+                    int minChunkX = portal.minX >> 4;
+                    int maxChunkX = portal.maxX >> 4;
+                    int minChunkZ = portal.minZ >> 4;
+                    int maxChunkZ = portal.maxZ >> 4;
+                    boolean chunksLoaded = true;
+                    for (int cx = minChunkX; cx <= maxChunkX; cx++) {
+                        for (int cz = minChunkZ; cz <= maxChunkZ; cz++) {
+                            if (!world.isChunkLoaded(cx, cz)) {
+                                chunksLoaded = false;
+                                break;
+                            }
+                        }
+                        if (!chunksLoaded) break;
+                    }
+                    if (!chunksLoaded) continue;
+
+                    // Proximity check: only process portals where at least one player is nearby (within 64 blocks)
+                    // or if the player is currently warming up for this portal.
+                    double centerX = (portal.minX + portal.maxX + 1) / 2.0;
+                    double centerY = (portal.minY + portal.maxY + 1) / 2.0;
+                    double centerZ = (portal.minZ + portal.maxZ + 1) / 2.0;
+                    boolean playerNearby = false;
+                    for (Player player : world.getPlayers()) {
+                        UUID uuid = player.getUniqueId();
+                        if (activeWarmups.containsKey(uuid) && activeWarmups.get(uuid).equals(portal.name)) {
+                            playerNearby = true;
+                            break;
+                        }
+                        Location pl = player.getLocation();
+                        double dx = pl.getX() - centerX;
+                        double dy = pl.getY() - centerY;
+                        double dz = pl.getZ() - centerZ;
+                        if (dx * dx + dy * dy + dz * dz <= 64 * 64) {
+                            playerNearby = true;
+                            break;
+                        }
+                    }
+                    if (!playerNearby) continue;
+
                     // 1. Spawn particles inside portal volume (only in AIR blocks)
                     if (particlesEnabled) {
                         org.bukkit.Color pColor = parseColor(portal.color);

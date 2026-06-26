@@ -109,8 +109,12 @@ public class BoxManager {
 
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 0.5f, 1.0f);
     }
-
     public boolean isHereWorldySign(Block block) {
+        // Fast-path: Check block type first to avoid expensive BlockState allocation for non-sign blocks
+        if (!block.getType().name().contains("SIGN")) {
+            return false;
+        }
+
         plugin.getLogger().info("[DEBUG] isHereWorldySign checking block: " + block.getType() + " at " + block.getLocation().getBlockX() + "," + block.getLocation().getBlockY() + "," + block.getLocation().getBlockZ());
         if (block.getState() instanceof Sign) {
             Sign sign = (Sign) block.getState();
